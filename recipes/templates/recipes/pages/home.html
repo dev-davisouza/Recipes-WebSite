@@ -1,17 +1,10 @@
-{% include '../partials/head.html' %}
+{% extends 'global/base.html' %}
 
-<body>
-    <!-- Including the header -->
-    {% include '../partials/header.html' %}
-
-    <!-- Including the search-bar form -->
-    {% include '../partials/search-bar.html' %}
-
-    <!-- Including the Recipe Cards -->
-    {% include '../partials/recipe-cards.html' %}
-
-    <!-- Including the Footer -->
-    {% include '../partials/footer.html' %}
-</body>
-
-</html>
+{% block content %}
+    <div class="main-content main-content-list container">
+        {% include '../partials/recipe-cards.html' %}
+        {% include '../partials/recipe-cards.html' %}
+        {% include '../partials/recipe-cards.html' %}
+        {% include '../partials/recipe-cards.html' %}
+    </div>
+{% endblock content %}
