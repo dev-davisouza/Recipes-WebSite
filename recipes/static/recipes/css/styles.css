@@ -169,6 +169,7 @@ h6 {
 
 .recipe-list-item {
     max-width: 64rem;
+    height: fit-content;
 }
 
 .recipe-list-item:hover {
@@ -179,7 +180,11 @@ h6 {
 .recipe-title-container {
     padding: var(--spacing-gutter-medium);
     padding-bottom: 2rem;
+}
 
+.recipe-title-container a {
+    text-decoration: none;
+    color: var(--color-primary-dark)
 }
 
 .recipe-author {
@@ -210,6 +215,7 @@ h6 {
     display: flex;
     flex-flow: row wrap;
     padding: var(--spacing-gutter-medium);
+    background: var(--color-gray-2);
 }
 
 .recipe-meta {
@@ -223,6 +229,7 @@ h6 {
 .recipe-meta-title {
     font-size: 1.6rem;
 }
+
 
 .recipe-footer a {
     background: var(--color-primary-dark);
@@ -238,6 +245,8 @@ h6 {
 .recipe-footer a:hover {
     filter: brightness(2);
 }
+
+
 
 .main-footer {
     display: flex;
@@ -266,4 +275,8 @@ h6 {
 .main-content-detail .recipe-list-item:hover {
     transform: scale(1);
     box-shadow: -5px 5px 15px rgba(0, 0, 0, .2);
+}
+
+.preparation-steps{
+    padding: var(--spacing-gutter-medium);
 }

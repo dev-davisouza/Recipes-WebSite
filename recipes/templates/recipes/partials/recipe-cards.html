@@ -1,10 +1,14 @@
 <div class="recipe recipe-list-item">
     <div class="recipe-cover">
-        <img src="https://placehold.jp/1280x720.png" alt="Temp">
+        <a href="{% url 'recipe' recipe.id %}">
+            <img src="{{recipe.cover.url}}" alt="Temp">
+        </a>
     </div>
     <div class="recipe-title-container">
         <h2 class="recipe-title">
-            {{recipe.title}}
+            <a href="{% url 'recipe' recipe.id %}">
+                {{recipe.title}}
+            </a>
         </h2>
     </div>
     <div class="recipe-author">
@@ -39,11 +43,17 @@
             </div>
         </div>
     </div>
-
-    <footer class="recipe-footer">
-        <a class="recipe-read-more button button-dark button-full-width" href="">
-            <i class="fas fa-eye"></i>
-            <span>ver mais...</span>
-        </a>
-    </footer>
+    {% if not is_detail_page %}
+        <footer class="recipe-footer">
+            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipe' recipe.id%}">
+                <i class="fas fa-eye"></i>
+                <span>ver mais...</span>
+            </a>
+        </footer>
+    {% endif %}
+    {% if is_detail_page %}
+        <div class="preparation-steps">
+            {{recipe.preparation_steps}}
+        </div>
+    {% endif %}
 </div>
