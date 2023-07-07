@@ -1,12 +1,12 @@
 <div class="recipe recipe-list-item">
     <div class="recipe-cover">
-        <a href="{% url 'recipe' recipe.id %}">
+        <a href="{% url 'recipes:recipe' recipe.id %}">
             <img src="{{recipe.cover.url}}" alt="Temp">
         </a>
     </div>
     <div class="recipe-title-container">
         <h2 class="recipe-title">
-            <a href="{% url 'recipe' recipe.id %}">
+            <a href="{% url 'recipes:recipe' recipe.id %}">
                 {{recipe.title}}
             </a>
         </h2>
@@ -14,7 +14,12 @@
     <div class="recipe-author">
         <span class="recipe-author-item">
             <i class="fas fa-user"></i>
-            {{recipe.author.first_name}} {{recipe.author.last_name}}
+            {% if recipe.author.first_name %}
+                {{recipe.author.first_name}} {{recipe.author.last_name}}
+                    
+            {% else %}
+                {{recipe.author.username}}
+            {% endif %}
         </span>
         <span class="recipe-author-item">
             <i class="fas fa-calendar-alt"></i>
@@ -22,7 +27,7 @@
         </span>
         <span class="recipe-author-item">
             <i class="fas fa-layer-group"></i>
-            <span> <a href=""> {{recipe.category.name}} </a> </span>
+            <span> <a href="{% url 'recipes:category' recipe.category.id %}"> {{recipe.category.name}} </a> </span>
         </span>
     </div>
     <div class="recipe-content">
@@ -45,7 +50,7 @@
     </div>
     {% if not is_detail_page %}
         <footer class="recipe-footer">
-            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipe' recipe.id%}">
+            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipes:recipe' recipe.id%}">
                 <i class="fas fa-eye"></i>
                 <span>ver mais...</span>
             </a>
