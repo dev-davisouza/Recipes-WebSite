@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from utils.recipes.factory import make_recipe
 from .models import Recipe
 
 
@@ -25,6 +24,8 @@ def home(request):
 
 
 def recipe(request, id):
-    context = {'recipe': make_recipe(),
+    recipe = Recipe.objects.get(pk=id)
+    context = {'recipe': recipe,
+               'title': f'{recipe.title} | ',
                'is_detail_page': True, }
     return render(request, 'recipes/pages/recipe.html', context)
