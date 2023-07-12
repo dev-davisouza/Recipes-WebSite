@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from utils.recipes.factory import make_recipe
 from .models import Recipe
 
@@ -6,7 +6,15 @@ from .models import Recipe
 def category(request, category_id):
     recipes = Recipe.objects.filter(
         category__id=category_id, is_published=True)
-    context = {'recipes': recipes, }
+
+    if not recipes:
+        response = render(request, 'recipes/pages/404_error.html')
+        response.status_code = 404
+        return response
+
+    context = {'recipes': recipes,
+               'title': f'{recipes.first().category.name} | ',
+               }
     return render(request, 'recipes/pages/category.html', context)
 
 
