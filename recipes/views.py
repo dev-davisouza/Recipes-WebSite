@@ -24,8 +24,13 @@ def home(request):
 
 
 def recipe(request, id):
-    recipe = Recipe.objects.get(pk=id)
-    context = {'recipe': recipe,
-               'title': f'{recipe.title} | ',
-               'is_detail_page': True, }
-    return render(request, 'recipes/pages/recipe.html', context)
+    if Recipe.objects.filter(pk=id).exists():
+        recipe = Recipe.objects.get(pk=id)
+        context = {'recipe': recipe,
+                   'title': f'{recipe.title} | ',
+                   'is_detail_page': True, }
+        return render(request, 'recipes/pages/recipe.html', context)
+    else:
+        response = render(request, 'recipes/pages/404_error.html')
+        response.status_code = 404
+        return response
