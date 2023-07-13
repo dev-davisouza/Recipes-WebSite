@@ -255,6 +255,8 @@ h6 {
     background: var(--color-primary-dark);
     color: var(--color-white);
     padding: var(--spacing-gutter-medium);
+    bottom: 0;
+    width: 100%;
 }
 
 .main-footer a {
