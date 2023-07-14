@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Recipe
 
 
@@ -24,7 +24,8 @@ def home(request):
         context = {'recipes': recipes, }
         return render(request, 'recipes/pages/home.html', context)
     else:
-        return render(request, 'recipes/pages/Not_recipes_yet.html', status=404)
+        return render(request, 'recipes/pages/Not_recipes_yet.html',
+                      status=404)
 
 
 def recipe(request, id):
