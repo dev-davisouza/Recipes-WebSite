@@ -18,9 +18,13 @@ def category(request, category_id):
 
 
 def home(request):
-    recipes = Recipe.objects.filter(is_published=True).order_by('updated_at')
-    context = {'recipes': recipes, }
-    return render(request, 'recipes/pages/home.html', context)
+    if Recipe.objects.filter(is_published=True).exists():
+        recipes = Recipe.objects.filter(
+            is_published=True).order_by('updated_at')
+        context = {'recipes': recipes, }
+        return render(request, 'recipes/pages/home.html', context)
+    else:
+        return render(request, 'recipes/pages/Not_recipes_yet.html', status=404)
 
 
 def recipe(request, id):
