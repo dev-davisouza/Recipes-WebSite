@@ -1,7 +1,7 @@
 # Django #
 venv
 .mypy_cache
-projeto/__pycache__
+project/__pycache__
 recipes/__pycache__
 recipes/migrations/__pycache__
 
