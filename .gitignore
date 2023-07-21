@@ -1,9 +1,7 @@
 # Django #
 venv
 .mypy_cache
-project/__pycache__
-recipes/__pycache__
-recipes/migrations/__pycache__
+__pycache__
 
 # Visual Studio Code # 
 .vscode/* 
