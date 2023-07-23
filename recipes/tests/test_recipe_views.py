@@ -40,21 +40,30 @@ class RecipeViewsTest(TestCase):
         )
 
     def test_recipe_home_view_is_correct(self):
+        # Getting the view by the URL
         view = resolve(reverse('recipes:home'))
         self.assertIs(view.func, views.home)
 
     def test_recipe_category_view_is_correct(self):
+        # Getting the view by the URL with args
         view = resolve(
             reverse('recipes:category', args=(1,))
         )
         self.assertIs(view.func, views.category)
 
     def test_recipe_detail_view_is_correct(self):
+        # Getting the view by the URL with kwargs
         view = resolve(
-            reverse('recipes:recipe', args=(1,))
+            reverse('recipes:recipe', kwargs={'id': 1})
         )
         self.assertIs(view.func, views.recipe)
 
     def test_recipe_home_view_returns_status_200_OK(self):
+        # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))
         self.assertEqual(response.status_code, 200)
+
+    def test_recipe_home_view_loads_correct_template(self):
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:home'))
+        self.assertTemplateUsed(response, 'recipes/pages/home.html')
