@@ -13,7 +13,7 @@ class RecipeViewsTest(TestCase):
     QuerySets.
     """
 
-    def setUp(self):
+    def setUp(self):  # This is a fixture
         # Create a test user
         self.user = User.objects.create_user(
             username='testuser', password='testpassword')
@@ -22,6 +22,11 @@ class RecipeViewsTest(TestCase):
         # Create a Category object test
         self.category = models.Category.objects.create(name='Asiáticas', id=1)
 
+        '''
+        NOTE: The attr servings_unit generate an error
+            if the first character isn't a uppercase letter.
+            I don't know why, but it happens!
+        '''
         # Create a Recipe object with the attr is_published=True
         self.recipe = models.Recipe.objects.create(
             id=1,
@@ -31,9 +36,8 @@ class RecipeViewsTest(TestCase):
             preparation_time=60,
             preparation_time_unit='minutos',
             servings=12,
-            servings_unit='porções',
+            servings_unit='Porções',
             preparation_steps='Passo 1: Misture os ingredientes ...',
-            preparation_steps_is_html=False,
             is_published=True,
             cover='recipes/covers/2023/07/06/user.webp',
             category=self.category,
@@ -52,15 +56,34 @@ class RecipeViewsTest(TestCase):
         response = self.client.get(reverse('recipes:home'))
         self.assertEqual(response.status_code, 200)
 
-    def test_recipe_home_view_returns_status_404_Not_Found(self):
+    """def test_recipe_home_view_returns_status_404_Not_Found(self):
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)"""
 
     def test_recipe_home_view_loads_correct_template(self):
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
+
+    def test_recipe_home_view_loads_content_correctly_on_template(self):
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:home'))
+        content = response.content.decode('utf-8')
+        elements = [
+            self.recipe.title,
+            self.recipe.description,
+            self.recipe.preparation_time,
+            self.recipe.preparation_time_unit,
+            self.recipe.servings,
+            self.recipe.servings_unit,
+            self.recipe.cover,
+            self.recipe.category.name,
+            self.recipe.author,
+        ]
+        # Check if each element is in the content string
+        for element in elements:
+            self.assertIn(str(element), content)
 
     # -------------------- Category Section --------------------
 
