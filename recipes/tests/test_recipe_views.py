@@ -39,7 +39,7 @@ class RecipeViewsTest(RecipeTestBase):
             self.recipe.servings_unit,
             self.recipe.cover,
             self.recipe.category.name,
-            self.recipe.author,
+            self.recipe.author.first_name,
         ]
         # Check if each element is in the content string
         for element in elements:
