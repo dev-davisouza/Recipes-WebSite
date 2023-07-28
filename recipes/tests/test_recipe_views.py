@@ -47,6 +47,17 @@ class RecipeViewsTest(RecipeTestBase):
         for element in elements:
             self.assertIn(str(element), content)
 
+    def test_home_template_do_not_loads_not_published_recipes(self):
+        # Creating alternative User to avoid the IntegrityError
+        alternative_user = self.make_author(id=2, username="Vlad")
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:home'))
+        content = response.content.decode('utf-8')
+        recipe_2 = self.make_recipe(title="Bolo de peroba",
+                                    is_published=False, id=2,
+                                    author=alternative_user)
+        self.assertNotIn(recipe_2.title, content)
+
     # -------------------- Category Section --------------------
 
     def test_recipe_category_view_is_correct(self):

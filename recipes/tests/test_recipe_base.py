@@ -21,14 +21,15 @@ class RecipeTestBase(TestCase):
         self.recipe = self.make_recipe()
 
     def make_category(self, name="Category"):
-        return models.Category.objects.create(name=name, id=1)
+        return models.Category.objects.create(name=name)
 
     def make_author(self,
                     first_name='user',
                     last_name='name',
                     username='username',
                     password='12345',
-                    email='user@gmail.com'
+                    email='user@gmail.com',
+                    id=1,
                     ):
 
         return User.objects.create_user(
@@ -37,6 +38,7 @@ class RecipeTestBase(TestCase):
             username=username,
             password=password,
             email=email,
+            id=id
         )
 
     def make_recipe(self,
