@@ -19,6 +19,7 @@ class RecipeTestBase(TestCase):
             I don't know why, but it happens!
         '''
         self.recipe = self.make_recipe()
+        return super().setUp()
 
     def make_category(self, name="Category"):
         return models.Category.objects.create(name=name)
