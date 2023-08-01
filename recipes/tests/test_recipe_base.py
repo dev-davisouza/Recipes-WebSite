@@ -55,7 +55,8 @@ class RecipeTestBase(TestCase):
                     is_published=True,
                     cover='recipes/covers/2023/07/06/user.webp',
                     category=None,
-                    author=None):
+                    author=None,
+                    preparation_steps_is_html=True,):
 
         if category is None:
             category = self.make_category()
@@ -77,4 +78,5 @@ class RecipeTestBase(TestCase):
             cover=cover,
             category=category,
             author=author,
+            preparation_steps_is_html=preparation_steps_is_html
         )
