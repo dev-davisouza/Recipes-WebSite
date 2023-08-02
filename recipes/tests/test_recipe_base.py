@@ -43,10 +43,9 @@ class RecipeTestBase(TestCase):
         )
 
     def make_recipe(self,
-                    id=1,
                     title='Bolo de Chocolate',
                     description='Um delicioso bolo de chocolate',
-                    slug=slugify('Bolo de Chocolate'),
+                    slug="test-recipe",
                     preparation_time=60,
                     preparation_time_unit='minutos',
                     servings=12,
@@ -65,13 +64,12 @@ class RecipeTestBase(TestCase):
             author = self.make_author()
 
         return models.Recipe.objects.create(
-            id=id,
             title=title,
             description=description,
-            slug=slug,  # Corrigido o uso do slugify
             preparation_time=preparation_time,
             preparation_time_unit=preparation_time_unit,
             servings=servings,
+            slug=slug,
             servings_unit=servings_unit,
             preparation_steps=preparation_steps,
             is_published=is_published,

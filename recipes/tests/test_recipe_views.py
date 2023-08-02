@@ -1,7 +1,6 @@
 from django.urls import reverse, resolve
 from recipes import views
 from .test_recipe_base import RecipeTestBase
-from unittest import skip
 
 
 class RecipeViewsTest(RecipeTestBase):
@@ -17,16 +16,23 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:home'))
         self.assertEqual(response.status_code, 200)
 
-    @skip("404")
     def test_recipe_home_view_returns_status_404_Not_Found(self):
+        self.recipe.delete()  # Delete the recipe
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))
         self.assertEqual(response.status_code, 404)
 
-    def test_recipe_home_view_loads_correct_template(self):
+    def test_recipe_home_view_loads_correct_template_if_status_200_OK(self):
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
+
+    def test_recipe_home_view_loads_correct_template_if_status_404_not_found(self):
+        self.recipe.delete()  # Delete the recipe
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:home'))
+        self.assertTemplateUsed(
+            response, 'recipes/pages/Not_recipes_yet.html')
 
     def test_recipe_home_view_loads_content_correctly_on_template(self):
         # Getting the HTTP response object by the URL
@@ -54,7 +60,7 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:home'))
         content = response.content.decode('utf-8')
         recipe_2 = self.make_recipe(title="Bolo de peroba",
-                                    is_published=False, id=2,
+                                    is_published=False,
                                     author=alternative_user)
         self.assertNotIn(recipe_2.title, content)
 

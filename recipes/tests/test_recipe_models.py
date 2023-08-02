@@ -17,7 +17,6 @@ class RecipeModelTest(RecipeTestBase):
         return models.Recipe.objects.create(
             title="Default Recipe",
             description="It's a default recipe...",
-            slug="default-recipe",
             preparation_time=1,
             preparation_time_unit="seconds",
             servings=1,
@@ -63,3 +62,41 @@ class RecipeModelTest(RecipeTestBase):
         recipe = self.make_recipe_by_defaults()
         self.assertFalse(recipe.is_published,
                          msg="This field is not False")
+
+    def test_recipe_string_representation(self):
+        recipe = self.make_recipe_by_defaults()
+        needed = recipe.title
+        self.assertEqual(str(recipe), needed,
+                         msg=f"Recipe string representation must be '{needed}'")
+
+    def test_category_string_representation(self):
+        category = self.make_category(name="Default")
+        needed = category.name
+        self.assertEqual(str(category), needed,
+                         msg=f"Recipe string representation must be '{needed}'")
+
+    def test_slug_is_generated(self):
+        recipe = self.make_recipe(title="title slug")
+        self.assertIsNotNone(recipe.slug)
+        self.assertEqual(recipe.slug, "title-slug")
+
+    def test_unique_slug_generation(self):
+        recipe1 = self.make_recipe(title="Like this")
+        recipe2 = self.make_recipe(title="Like this")
+        self.assertNotEqual(recipe1.slug, recipe2.slug)
+
+    def test_unique_slug_generation_on_save(self):
+        # Crie um novo objeto Recipe com o mesmo slug
+        recipe2 = self.make_recipe(
+            title="Another Recipe", slug="test-recipe")
+
+        # Verifique se a slug é atualizada para um valor único
+        recipe2.save()
+        # Verifica se o slug foi alterado
+        self.assertNotEqual(recipe2.slug, self.recipe.slug)
+
+    def test_slug_generation_when_not_have_slug(self):
+        # Crie um objeto Recipe com título "Test Recipe"
+        recipe1 = self.make_recipe(slug=None)
+        recipe1.save()
+        self.assertTrue(recipe1.slug is not None)
