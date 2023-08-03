@@ -1,23 +1,18 @@
 from django.test import TestCase
-from django.utils.text import slugify
 from django.contrib.auth.models import User
 from recipes import models
 
 
 class RecipeTestBase(TestCase):
     """
-    The function below creates test objects so that they can be tested
-    in other test functions, because there are some rules in the views that
-    might cause the tests to return unexpected values when working with empty
-    QuerySets.
+    The function below creates a Recipe test object that can be used in all
+    classes that inherit from this class, the reason is, i want to simulate 
+    the situation where we have recipes to see, if we don't have available 
+    recipes, the tests will fail, because the views was created to give
+    a response, a recipe or more! So, it's necessary have recipes.
     """
 
     def setUp(self):  # This is a fixture
-        '''
-        NOTE: The attr servings_unit generate an error
-            if the first character isn't a uppercase letter.
-            I don't know why, but it happens!
-        '''
         self.recipe = self.make_recipe()
         return super().setUp()
 
@@ -41,6 +36,12 @@ class RecipeTestBase(TestCase):
             email=email,
             id=id
         )
+
+    '''
+    NOTE: The attr servings_unit generate an error
+        if the first character isn't a uppercase letter.
+        I don't know why, but it happens!
+    '''
 
     def make_recipe(self,
                     title='Bolo de Chocolate',

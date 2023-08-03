@@ -33,14 +33,13 @@ class Recipe(models.Model):
 
     def _generate_unique_slug(self):
         """
-        Gera um "slug" único, adicionando o ID do objeto, se necessário.
+        Generate an unique slug, adding a number in the end if necessary.
         """
-        slug_base = slugify(self.title)
-        slug = slug_base
+        slug = slugify(self.title)
         counter = 1
 
         while Recipe.objects.filter(slug=slug).exclude(id=self.id).exists():
-            slug = f"{slug_base}-{counter}"
+            slug = f"{slug}-{counter}"
             counter += 1
 
         return slug

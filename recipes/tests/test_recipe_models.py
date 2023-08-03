@@ -6,11 +6,12 @@ from parameterized import parameterized
 class RecipeModelTest(RecipeTestBase):
     """
     In the test_recipe_base.py base file I created the setUp method
-    that creates a Recipe object that can be used in the all classes that
-    inherit of the RecipeTestBase class, but there we have different values
-    from the default, for one side it's useful but for another side this can
-    be not useful, so below i create here a method that can creates a Recipe
-    object with values by default defined in the model.
+    that creates a Recipe object that can be used in all classes that
+    inherit from RecipeTestBase class, but there we have different values
+    from the default, for example: the field is_published is False by default,
+    but there i defined this field as True, for one side it's useful but for 
+    other side, this can't be useful, so below i create here a method that can 
+    creates a Recipe object with values by default defined in the model.
     """
 
     def make_recipe_by_defaults(self):
@@ -28,7 +29,7 @@ class RecipeModelTest(RecipeTestBase):
     """
     The next two functions (tests) will test the validation of the `max_length`
     parameter. The first one, just below, manually tests only one attribute,
-    while the second one below tests multiple attributes using the external
+    while the second below tests multiple attributes using the external
     library "parameterized." This library takes tuples containing the fields
     and arguments passed to the parameters of each field, consequently
     generating a more automated code instead of repetitive code. Additionally,
@@ -86,17 +87,31 @@ class RecipeModelTest(RecipeTestBase):
         self.assertNotEqual(recipe1.slug, recipe2.slug)
 
     def test_unique_slug_generation_on_save(self):
-        # Crie um novo objeto Recipe com o mesmo slug
+        # Creating a new recipe with the same slug of self.recipe
         recipe2 = self.make_recipe(
             title="Another Recipe", slug="test-recipe")
-
-        # Verifique se a slug é atualizada para um valor único
+        """
+        The object self.recipe setted in setUp(self) method creates a
+        recipe with the standart slug "test-recipe". self.recipe
+        is the firt object to be created in the test that inherit
+        from RecipeTestBase, so the slug "test-recipe" will be his.
+        """
+        # Verify if the slug is updated to unique value.
         recipe2.save()
-        # Verifica se o slug foi alterado
+        # Verify if the slug was updated
         self.assertNotEqual(recipe2.slug, self.recipe.slug)
 
     def test_slug_generation_when_not_have_slug(self):
-        # Crie um objeto Recipe com título "Test Recipe"
+        """
+        If we try to create an object with the attr slug equal
+        to None, the method save() from models execute a logic
+        that control the None value recieved. First, he try to
+        generate a slug based in the title, it means that he
+        'try to slug the title' with the function slugify(),
+        but if this slug alredy exists, he try to generate an
+        unique slug adding a number in the end of the 'slugged
+        title'. For more information see the models.py.
+        """
         recipe1 = self.make_recipe(slug=None)
         recipe1.save()
         self.assertTrue(recipe1.slug is not None)
