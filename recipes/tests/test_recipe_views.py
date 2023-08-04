@@ -111,3 +111,10 @@ class RecipeViewsTest(RecipeTestBase):
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:recipe', args=(1,)))
         self.assertTemplateUsed(response, 'recipes/pages/recipe.html')
+
+    # -------------------- Search bar Section --------------------
+
+    def test_search_view_is_correct(self):
+        # Getting the view by the URL
+        view = resolve(reverse('recipes:search'))
+        self.assertIs(view.func, views.recipe)
