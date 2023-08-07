@@ -38,3 +38,10 @@ def recipe(request, id):
         response = render(request, 'recipes/pages/404_error.html')
         response.status_code = 404
         return response
+
+
+def search(request):
+    search_term = request.GET.get("q")
+    if not search_term:
+        return render(request, 'recipes/pages/404_error.html', status=404)
+    return render(request, 'recipes/pages/search.html')

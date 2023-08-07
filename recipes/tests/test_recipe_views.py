@@ -117,4 +117,24 @@ class RecipeViewsTest(RecipeTestBase):
     def test_search_view_is_correct(self):
         # Getting the view by the URL
         view = resolve(reverse('recipes:search'))
-        self.assertIs(view.func, views.recipe)
+        self.assertIs(view.func, views.search)
+
+    def test_search_view_loads_correct_template(self):
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:search') + "?q=teste")
+        self.assertTemplateUsed(response, 'recipes/pages/search.html')
+
+    def test_search_view_loads_correct_template_if_404_not_found(self):
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:search'))
+        self.assertTemplateUsed(response, 'recipes/pages/404_error.html')
+
+    def test_search_view_returns_status_404_Not_Found(self):
+        # Getting the URL
+        response = self.client.get(reverse('recipes:search'))
+        self.assertEqual(response.status_code, 404)
+
+    def test_search_view_returns_status_200_OK(self):
+        # Getting the URL with QueryString
+        response = self.client.get(reverse('recipes:search') + "?q=teste")
+        self.assertEqual(response.status_code, 200)
