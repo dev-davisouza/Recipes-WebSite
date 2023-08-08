@@ -1,9 +1,17 @@
 {% extends 'global/base.html' %}
 
-{% block title %}404 Not Found | {% endblock %}
+{% block title %}{{title}}{% endblock %}
 
 {% block content %}
     <div class="main-content main-content-list container">
-        <center><h1>Error 404 Not Found</h1></center>
+        {% if search_query %}
+            <center><h1>Recipes not found</h1></center>
+        {% elif is_category %}
+            <center><h1>Category does not exists</h1></center>
+        {% elif not_recipes %}
+            <center><h1>There are not published recipes yet</h1></center>
+        {% else %}
+            <center><h1>Error 404 Not Found</h1></center>
+        {% endif %}
     </div>
 {% endblock content %} 

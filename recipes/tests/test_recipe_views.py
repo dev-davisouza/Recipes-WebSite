@@ -32,7 +32,7 @@ class RecipeViewsTest(RecipeTestBase):
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))
         self.assertTemplateUsed(
-            response, 'recipes/pages/Not_recipes_yet.html')
+            response, 'recipes/pages/404_error.html')
 
     def test_recipe_home_view_loads_content_correctly_on_template(self):
         # Getting the HTTP response object by the URL
