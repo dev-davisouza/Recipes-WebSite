@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Recipe
+from recipes.models import Recipe
+from django.db.models import Q
 
 
 def category(request, category_id):
@@ -32,6 +33,7 @@ def home(request):
 
 
 def recipe(request, id):
+    context = {}
     if Recipe.objects.filter(pk=id).exists():
         recipe = Recipe.objects.get(pk=id)
         context = {'recipe': recipe,
@@ -46,9 +48,17 @@ def recipe(request, id):
 
 
 def search(request):
-    search_term = request.GET.get("q").strip()
+    search_term = request.GET.get("q")
+    if search_term is not None:
+        search_term = search_term.strip()
+    else:
+        search_term = ""
     recipes = Recipe.objects.filter(
-        title__icontains=search_term,
+        Q(
+            Q(title__icontains=search_term) |
+            Q(description__icontains=search_term)
+        ),
+        is_published=True
     )
     if not search_term or not recipes:
         return render(request, 'recipes/pages/404_error.html', status=404,
