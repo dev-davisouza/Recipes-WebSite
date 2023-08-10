@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from recipes.models import Recipe
 from django.db.models import Q
-from django.core.paginator import Paginator
-from utils.pagination import make_pagination_range
+from utils.pagination import make_pagination
 
 
 def category(request, category_id):
@@ -16,8 +15,9 @@ def category(request, category_id):
                                    "is_category": True})
         response.status_code = 404
         return response
-
-    context = {'recipes': recipes,
+    page_obj, pagination_range = make_pagination(request, recipes, 9)
+    context = {'recipes': page_obj,
+               'pagination_range': pagination_range,
                'title': f'{recipes.first().category.name} | ',
                }
     return render(request, 'recipes/pages/category.html', context, status=200)
@@ -27,19 +27,7 @@ def home(request):
     recipes = Recipe.objects.filter(
         is_published=True).order_by('-created_at')
 
-    try:
-        current_page = int(request.GET.get('page', 1))
-    except ValueError:
-        current_page = 1
-
-    paginator = Paginator(recipes, 3)
-    page_obj = paginator.get_page(current_page)
-
-    pagination_range = make_pagination_range(
-        paginator.page_range,
-        4,
-        current_page
-    )
+    page_obj, pagination_range = make_pagination(request, recipes, 9)
     context = {'recipes': page_obj,
                'not_recipes': True,
                'pagination_range': pagination_range, }
@@ -78,6 +66,7 @@ def search(request):
         ),
         is_published=True
     )
+
     if not search_term or not recipes:
         return render(request, 'recipes/pages/404_error.html', status=404,
                       context={
@@ -85,7 +74,11 @@ def search(request):
                           "title": "Recipes not found | ",
                       })
 
+    page_obj, pagination_range = make_pagination(request, recipes, 9)
+
     return render(request, 'recipes/pages/search.html', context={
         "title": f"search for '{search_term}' | ",
-        "recipes": recipes,
+        'recipes': page_obj,
+        'pagination_range': pagination_range,
+        'additional_url_query': f'&q={search_term}',
     })
