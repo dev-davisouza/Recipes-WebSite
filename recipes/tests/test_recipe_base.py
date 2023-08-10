@@ -6,8 +6,8 @@ from recipes import models
 class RecipeTestBase(TestCase):
     """
     The function below creates a Recipe test object that can be used in all
-    classes that inherit from this class, the reason is, i want to simulate 
-    the situation where we have recipes to see, if we don't have available 
+    classes that inherit from this class, the reason is, i want to simulate
+    the situation where we have recipes to see, if we don't have available
     recipes, the tests will fail, because the views was created to give
     a response, a recipe or more! So, it's necessary have recipes.
     """

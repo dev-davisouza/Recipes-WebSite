@@ -9,8 +9,8 @@ class RecipeModelTest(RecipeTestBase):
     that creates a Recipe object that can be used in all classes that
     inherit from RecipeTestBase class, but there we have different values
     from the default, for example: the field is_published is False by default,
-    but there i defined this field as True, for one side it's useful but for 
-    other side, this can't be useful, so below i create here a method that can 
+    but there i defined this field as True, for one side it's useful but for
+    other side, this can't be useful, so below i create here a method that can
     creates a Recipe object with values by default defined in the model.
     """
 
@@ -68,13 +68,13 @@ class RecipeModelTest(RecipeTestBase):
         recipe = self.make_recipe_by_defaults()
         needed = recipe.title
         self.assertEqual(str(recipe), needed,
-                         msg=f"Recipe string representation must be '{needed}'")
+                         msg=f"Recipe string representation must be '{needed}'")  # noqa
 
     def test_category_string_representation(self):
         category = self.make_category(name="Default")
         needed = category.name
         self.assertEqual(str(category), needed,
-                         msg=f"Recipe string representation must be '{needed}'")
+                         msg=f"Recipe string representation must be '{needed}'")  # noqa
 
     def test_slug_is_generated(self):
         recipe = self.make_recipe(title="title slug")
