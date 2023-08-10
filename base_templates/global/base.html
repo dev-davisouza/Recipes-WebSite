@@ -31,8 +31,8 @@
 
     <!-- Including the Recipe Cards -->
     <main class="main-content-container">
-        {% block content %}
-        {% endblock content %}
+        {% block content %}{% endblock content %}
+        {% include 'recipes/partials/pagination.html' %}
     </main>
 
     <!-- Including the Footer -->

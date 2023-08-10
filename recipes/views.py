@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from recipes.models import Recipe
 from django.db.models import Q
+from django.core.paginator import Paginator
+from utils.pagination import make_pagination_range
 
 
 def category(request, category_id):
@@ -23,9 +25,25 @@ def category(request, category_id):
 
 def home(request):
     recipes = Recipe.objects.filter(
-        is_published=True).order_by('updated_at')
-    context = {'recipes': recipes,
-               'not_recipes': True, }
+        is_published=True).order_by('-created_at')
+
+    try:
+        current_page = int(request.GET.get('page', 1))
+    except ValueError:
+        current_page = 1
+
+    paginator = Paginator(recipes, 3)
+    page_obj = paginator.get_page(current_page)
+
+    pagination_range = make_pagination_range(
+        paginator.page_range,
+        4,
+        current_page
+    )
+    context = {'recipes': page_obj,
+               'not_recipes': True,
+               'pagination_range': pagination_range, }
+
     if not recipes:
         return render(request, 'recipes/pages/404_error.html', context,
                       status=404)
