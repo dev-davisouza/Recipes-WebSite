@@ -25,3 +25,18 @@ class RecipeViewsCategoryTest(RecipeTestBase):
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:category', args=(1,)))
         self.assertTemplateUsed(response, 'recipes/pages/category.html')
+
+    def test_recipe_category_view_loads_correct_template_if_404_not_found(self):  # noqa
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:category', args=(1000,)))
+        self.assertTemplateUsed(response, 'recipes/pages/404_error.html')
+
+    def test_context_if_not_recipes_404_not_found(self):
+        expected_context = {"title": "Category not found | ",
+                            "category_404": "Category does not exists",
+                            "is_category": True}
+
+        # Getting the HTTP response object by the URL
+        response = self.client.get(reverse('recipes:category', args=(1000,)))
+        context = response.context
+        self.assertDictContainsSubset(expected_context, context)
