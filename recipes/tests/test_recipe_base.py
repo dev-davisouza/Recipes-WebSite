@@ -13,7 +13,10 @@ class RecipeTestBase(TestCase):
     """
 
     def setUp(self):  # This is a fixture
-        self.recipe = self.make_recipe()
+        self.author = self.make_author()
+        self.category = self.make_category()
+        self.recipe = self.make_recipe(
+            author=self.author, category=self.category)
         return super().setUp()
 
     def make_category(self, name="Category"):

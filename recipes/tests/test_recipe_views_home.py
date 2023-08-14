@@ -25,7 +25,7 @@ class RecipeViewsHomeTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:home'))
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
-    def test_recipe_home_view_loads_correct_template_if_status_404_not_found(self):
+    def test_recipe_home_view_loads_correct_template_if_status_404_not_found(self):  # noqa
         self.recipe.delete()  # Delete the recipe
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:home'))

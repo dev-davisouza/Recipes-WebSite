@@ -10,6 +10,8 @@
             <center><h1>Category does not exists</h1></center>
         {% elif not_recipes %}
             <center><h1>There are not published recipes yet</h1></center>
+        {% elif is_detail_page %}
+            <center><h1>This recipe was not found</h1></center>
         {% else %}
             <center><h1>Error 404 Not Found</h1></center>
         {% endif %}

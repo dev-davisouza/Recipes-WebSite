@@ -3,6 +3,14 @@
 {% block title %}Home | {% endblock %}
 
 {% block content %}
+    {% if messages %}
+        <div class="main-content container">
+            {% for message in messages %}
+                <center>{{ message }}</center>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="main-content main-content-list container">
         {% for recipe in recipes %}
             {% include '../partials/recipe-cards.html' %}
