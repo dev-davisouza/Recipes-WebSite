@@ -41,10 +41,10 @@ def home(request):
     return render(request, 'recipes/pages/home.html', context, status=200)
 
 
-def recipe(request, id):
+def recipe(request, slug):
     context = {}
-    if Recipe.objects.filter(pk=id).exists():
-        recipe = Recipe.objects.get(pk=id)
+    if Recipe.objects.filter(slug=slug).exists():
+        recipe = Recipe.objects.get(slug=slug)
         context = {'recipe': recipe,
                    'title': f'{recipe.title} | ',
                    'is_detail_page': True, }
