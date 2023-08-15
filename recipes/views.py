@@ -3,7 +3,6 @@ from django.shortcuts import render
 from recipes.models import Recipe
 from django.db.models import Q
 from utils.pagination import make_pagination
-from django.contrib import messages
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
@@ -30,8 +29,6 @@ def category(request, category_id):
 def home(request):
     recipes = Recipe.objects.filter(
         is_published=True).order_by('-created_at')
-
-    messages.success(request, 'PUT CSS HERE BRO')
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
     context = {'recipes': page_obj,
