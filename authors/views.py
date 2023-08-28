@@ -3,7 +3,6 @@ from .forms import RegisterForm
 
 
 def add_user(request):
-
     if request.POST:
         form = RegisterForm(request.POST)
     else:
