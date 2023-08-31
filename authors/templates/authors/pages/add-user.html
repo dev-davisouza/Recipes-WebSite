@@ -2,11 +2,11 @@
 {% block title %} {{title}} {% endblock  %}
 {% block content %}
 <div class="main-content center container">
-    <h2>Register</h2>
+    <center><h2>Register</h2></center>
   </div>
 
   <div class="main-content container">
-    <form action="" method="POST">
+    <form action="{% url 'authors:treat' %}" method="POST">
       {% csrf_token %}
 
       <div class="form-content form-content-grid">
@@ -23,9 +23,10 @@
           </div>
         {% endfor %}
       </div>
-
-      <div class="form-group">
-        <button type="submit">Send</button>
+      <div class="form-content form-content-grid">
+        <div class="form-group">
+          <button type="submit">Send</button>
+        </div>
       </div>
     </form>
   </div>
