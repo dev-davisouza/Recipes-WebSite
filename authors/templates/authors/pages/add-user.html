@@ -5,6 +5,8 @@
     <center><h2>Register</h2></center>
   </div>
 
+  {% include 'recipes/partials/messages.html' %}
+
   <div class="main-content container">
     <form action="{% url 'authors:treat' %}" method="POST">
       {% csrf_token %}

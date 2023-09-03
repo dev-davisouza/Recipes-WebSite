@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 def add_attr(field, attr_name, attr_new_val):
@@ -54,3 +55,47 @@ class RegisterForm(forms.ModelForm):
         help_texts = {
             'email': "The email must be valid.",
         }
+
+    def clean_first_name(self):
+        data = self.cleaned_data.get('first_name')
+        alphabet = list('abcdefghijklnmopqrstuvwxyz')
+
+        for letter in data:
+            if letter.lower() not in alphabet:
+                raise ValidationError(
+                    f"Don't write {letter} or anyone special character in this field",  # noqa
+                    code='invalid',
+                )
+
+            return data
+
+    def clean_last_name(self):
+        data = self.cleaned_data.get('last_name')
+        alphabet = list('abcdefghijklnmopqrstuvwxyz')
+
+        for letter in data:
+            if letter.lower() not in alphabet:
+                raise ValidationError(
+                    f"Don't write {letter} or anyone special character in this field",  # noqa
+                    code='invalid',
+                )
+
+            return data
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+
+        if password != password2:
+            password_confirmation_error = ValidationError(
+                'Password and password confirmation must be equal',
+                code='invalid'
+            )
+            raise ValidationError({
+                'password': password_confirmation_error,
+                'password2': [
+                    password_confirmation_error,
+                ],
+            })
