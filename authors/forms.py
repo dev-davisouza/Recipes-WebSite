@@ -50,7 +50,7 @@ class RegisterForm(forms.ModelForm):
             'password',
         ]
         help_texts = {
-            'email': "The email must be valid.",
+            'email': "The e-mail must be valid.",
         }
 
     def clean_first_name(self):
