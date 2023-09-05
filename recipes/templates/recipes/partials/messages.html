@@ -2,7 +2,10 @@
 <div class="main-content container messages-container">
     {% for message in messages %}
         <div class="message {{ message.tags }}">
-            <center>{{ message }}</center>
+            <center>
+                {{ message }}
+                <button class="close-message" onclick="closeMessage(this)">X</button>
+            </center>
         </div>
     {% endfor %}
 </div>

@@ -412,6 +412,17 @@ h6 {
   color: var(--color-debug-dark);
 }
 
+.close-message {
+    background-color: transparent;
+    color:#000;
+    opacity: 50%;
+    border: none;
+    padding: 5px 3px;
+    cursor: pointer;
+    float: right;
+    margin-top: -10px;
+}
+
 @media (max-width: 600px) {
     .main-content-list,
     .form-content-grid{

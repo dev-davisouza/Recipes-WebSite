@@ -2,6 +2,14 @@
 {% block title %} {{title}} {% endblock  %}
 {% block content %}
 <div class="main-content center container">
+  <script>
+      function closeMessage(button) {
+          // Encontre o elemento pai da mensagem para ocultá-lo
+          var messageDiv = button.parentElement.parentElement;
+          messageDiv.style.display = "none";
+        }
+  </script>
+
     <center><h2>Register</h2></center>
   </div>
 
