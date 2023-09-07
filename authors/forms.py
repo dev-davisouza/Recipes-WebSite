@@ -15,6 +15,7 @@ def add_placeholder(field, placeholder_val):
 class RegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Placeholders
         add_placeholder(self.fields['username'], 'Mr. Cabaço')
         add_placeholder(self.fields['email'], 'youremail@mail.com')
         add_placeholder(self.fields['first_name'], 'Ex.: Davi')
@@ -25,6 +26,7 @@ class RegisterForm(forms.ModelForm):
     password = forms.CharField(
         required=True,
         widget=forms.PasswordInput(),
+        label="Password",
         error_messages={
             'required': 'Password must not be empty'
         },
@@ -49,6 +51,12 @@ class RegisterForm(forms.ModelForm):
             'email',
             'password',
         ]
+        labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'username': 'Username',
+            'email': "E-mail",
+        }
         help_texts = {
             'email': "The e-mail must be valid.",
         }
