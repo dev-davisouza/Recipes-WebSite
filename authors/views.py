@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import RegisterForm
+from .models import User
 
 
 def add_user(request):
@@ -22,7 +23,16 @@ def treat_post_add_user(request):
     form = RegisterForm(POST)
 
     if form.is_valid():
-        form.save()
+        user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password'],
+            email=form.cleaned_data['email'],
+            first_name=form.cleaned_data['first_name'],
+            last_name=form.cleaned_data['last_name']
+        )
+        author = form.save(commit=False)
+        author.user = user
+        author.save()
         messages.success(request, 'Your user is created, please log in.')
 
         del (request.session['register_form_data'])

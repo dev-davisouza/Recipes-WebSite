@@ -1,10 +1,12 @@
 {% extends 'global/base.html' %}
 {% block title %} {{title}} {% endblock  %}
 {% block content %}
+
 <div class="main-content center container">
+
+  <!-- Script for the close Button of flash message -->
   <script>
       function closeMessage(button) {
-          // Encontre o elemento pai da mensagem para ocultá-lo
           var messageDiv = button.parentElement.parentElement;
           messageDiv.style.display = "none";
         }
