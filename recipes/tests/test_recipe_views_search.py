@@ -30,7 +30,7 @@ class RecipeViewsSearchTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:search') + "?q=Temaki")
         self.assertTemplateUsed(response, 'recipes/pages/404_error.html')
 
-    def test_search_view_loads_correct_title_on_template_if_404_not_found(self):
+    def test_search_view_loads_correct_title_on_template_if_404_not_found(self):  # noqa
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:search') + "?q=Temaki")
         expected_title = "Recipes not found | "
