@@ -3,6 +3,7 @@ from django.shortcuts import render
 from recipes.models import Recipe
 from django.db.models import Q
 from utils.pagination import make_pagination
+from django.shortcuts import get_object_or_404
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
@@ -43,13 +44,15 @@ def home(request):
 
 def recipe(request, slug):
     context = {}
-    if Recipe.objects.filter(slug=slug).exists():
-        recipe = Recipe.objects.get(slug=slug)
-        context = {'recipe': recipe,
-                   'title': f'{recipe.title} | ',
-                   'is_detail_page': True, }
+    try:
+        recipe = get_object_or_404(Recipe, slug=slug)
+        context = {
+            'recipe': recipe,
+            'title': f'{recipe.title} | ',
+            'is_detail_page': True,
+        }
         return render(request, 'recipes/pages/recipe.html', context)
-    else:
+    except Recipe.DoesNotExist:
         response = render(request, 'recipes/pages/404_error.html',
                           context={"title": "Recipe not found | ",
                                    'is_detail_page': True, })

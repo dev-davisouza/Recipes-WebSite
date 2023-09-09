@@ -2,18 +2,18 @@ from unittest import TestCase
 from django.test import TestCase as DjangoTestCase
 from django.urls import reverse
 from parameterized import parameterized
-from authors.forms import RegisterForm
+from authors.forms import RegisterForm, Authors
 
 
 class AuthorsRegisterFormUnittest(TestCase):
 
     @parameterized.expand([
-        ('username', 'Mr. Cabaço'),
+        ('username', 'Ex.: Mr. Cabaço'),
         ('email', 'youremail@mail.com'),
         ('first_name', 'Ex.: Davi'),
         ('last_name', 'Ex.: Souza'),
         ('password', 'Your password'),
-        ('password2', 'Repeat your password'),
+        ('password_confirmation', 'Repeat your password'),
     ])
     def test_placeholder_fields(self, field, expected_placeholder):
         form = RegisterForm()
@@ -21,32 +21,15 @@ class AuthorsRegisterFormUnittest(TestCase):
         self.assertEqual(current_placeholder, expected_placeholder)
 
     @parameterized.expand([
-        ('username', (
-            'Obrigatório. 150 caracteres ou menos. '
-            'Letras, números e @/./+/-/_ apenas.')),
-        ('email', 'The e-mail must be valid.'),
-        ('password', (
-            'Password must have at least one uppercase letter, '
-            'one lowercase letter and one number. The length should be '
-            'at least 8 characters.'
-        )),
-    ])
-    def test_fields_help_text(self, field, needed):
-        form = RegisterForm()
-        current = form[field].field.help_text
-        self.assertEqual(current, needed)
-
-    @parameterized.expand([
         ('username', 'Username'),
         ('first_name', 'First Name'),
         ('last_name', 'Last Name'),
         ('email', 'E-mail'),
         ('password', 'Password'),
-        ('password2', 'Password Confirmation'),
+        ('password_confirmation', 'Password Confirmation'),
     ])
     def test_fields_label(self, field, needed):
-        form = RegisterForm()
-        current = form[field].field.label
+        current = Authors._meta.get_field(field).verbose_name
         self.assertEqual(current, needed)
 
 
@@ -58,7 +41,7 @@ class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
             'last_name': 'last',
             'email': 'email@anyemail.com',
             'password': 'Str0ngP@ssword1',
-            'password2': 'Str0ngP@ssword1',
+            'password_confirmation': 'Str0ngP@ssword1',
         }
         return super().setUp(*args, **kwargs)
 

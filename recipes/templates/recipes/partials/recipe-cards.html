@@ -1,8 +1,10 @@
 <div class="recipe recipe-list-item">
     <div class="recipe-cover">
-        <a href="{% url 'recipes:recipe' recipe.slug %}">
-            <img src="{{recipe.cover.url}}" alt="Temp">
-        </a>
+        {% if recipe.cover %}
+            <a href="{% url 'recipes:recipe' recipe.slug %}">
+                <img src="{{recipe.cover.url}}" alt="Temp">
+            </a>
+        {% endif %}
     </div>
     <div class="recipe-title-container">
         <h2 class="recipe-title">

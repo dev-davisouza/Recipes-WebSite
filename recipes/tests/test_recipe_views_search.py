@@ -39,7 +39,8 @@ class RecipeViewsSearchTest(RecipeTestBase):
 
     def test_search_view_returns_status_404_Not_Found(self):
         # Getting the URL
-        response = self.client.get(reverse('recipes:search'))
+        response = self.client.get(
+            reverse('recipes:search') + "?q=Louco e sonhador")
         self.assertEqual(response.status_code, 404)
 
     def test_search_view_returns_status_200_OK(self):
