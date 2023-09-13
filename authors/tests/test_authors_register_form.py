@@ -104,7 +104,8 @@ class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
         data = self.form_data
         data.update(invalid_name)
 
-        # Creating a invalid form, invalid 'cause they can't recieve the same user, username & email
+        '''Creating a invalid form, invalid 'cause they can't recieve
+         the same user, username & email'''
         self.form2 = RegisterForm(data=self.form_data)
         self.assertFalse(self.form2.is_valid())
         self.assertIn(field, self.form2.errors)
