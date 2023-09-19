@@ -96,16 +96,19 @@ class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
         ('first_name', "Don't write 1 or anyone special character in this field"),  # noqa
         ('last_name', "Don't write 1 or anyone special character in this field"),  # noqa
         ('password', 'Password and password confirmation must be equal'),
-        ('password_validation', 'Password and password confirmation must be equal'),  # noqa
+        ('password_confirmation', 'Password and password confirmation must be equal'),   # noqa
     ])
     def test_clean_fields_validation(self, field, error_msg):
         invalid_name = {'first_name': '123', 'last_name': '123'}
+        invalid_passes = {'password': 'str@ngpass123',
+                          'password_confirmation': 'wea&kpass123'}
         # Updating the form data with invalid names
         data = self.form_data
         data.update(invalid_name)
+        data.update(invalid_passes)
 
         '''Creating a invalid form, invalid 'cause they can't recieve
-         the same user, username & email'''
+        the same user, username & email'''
         self.form2 = RegisterForm(data=self.form_data)
         self.assertFalse(self.form2.is_valid())
         self.assertIn(field, self.form2.errors)
