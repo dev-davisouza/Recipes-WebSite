@@ -114,3 +114,15 @@ class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
         self.assertIn(field, self.form2.errors)
         self.assertEqual(self.form2.errors[field][0],
                          error_msg)
+
+    @parameterized.expand([
+        ('username', 'user'),
+        ('first_name', 'first'),
+        ('last_name', 'last'),
+        ('email', 'email@anyemail.com'),
+        ('password', 'Str0ngP@ssword1'),
+        ('password_confirmation', 'Str0ngP@ssword1'),
+    ])
+    def test_check_validators_return_data(self, field, expected_value):
+        form_attributes = vars(self.form)
+        self.assertEqual(form_attributes.get(field), expected_value)
