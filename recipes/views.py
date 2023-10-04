@@ -76,6 +76,7 @@ def search(request):
     if not search_term or not recipes:
         return render(request, 'recipes/pages/404_error.html', status=404,
                       context={
+                          "search_term": search_term,
                           "search_query": True,
                           "title": "Recipes not found | ",
                       })
@@ -87,4 +88,5 @@ def search(request):
         'recipes': page_obj,
         'pagination_range': pagination_range,
         'additional_url_query': f'&q={search_term}',
+        "search_term": search_term,
     })

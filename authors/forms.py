@@ -99,26 +99,20 @@ class RegisterForm(forms.ModelForm):
 
             return data
 
-    def clean_password(self):
+    def clean(self):
+        cleaned_data = super().clean()
 
-        password = self.cleaned_data.get('password')
-        password_confirmation = self.cleaned_data.get('password_confirmation')
+        password = cleaned_data.get('password')
+        password_confirmation = cleaned_data.get('password_confirmation')
 
         if password != password_confirmation:
-            raise ValidationError(
+            password_confirmation_error = ValidationError(
                 'Password and password confirmation must be equal',
-                code='invalid',)
-
-        return password
-
-    def clean_password_confirmation(self):
-
-        password_confirmation = self.cleaned_data.get('password_confirmation')
-        password = self.cleaned_data.get('password')
-
-        if password_confirmation != password:
-            raise ValidationError(
-                'Password and password confirmation must be equal',
-                code='invalid',)
-
-        return password_confirmation
+                code='invalid'
+            )
+            raise ValidationError({
+                'password': password_confirmation_error,
+                'password_confirmation': [
+                    password_confirmation_error,
+                ],
+            })

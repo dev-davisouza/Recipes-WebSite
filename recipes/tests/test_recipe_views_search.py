@@ -52,3 +52,11 @@ class RecipeViewsSearchTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:search') + "?q=Bo")
         content = response.content.decode("utf-8")
         self.assertIn("Bolo", content)
+
+    def test_search_term_is_not_none(self):
+        response = self.client.get(reverse('recipes:search') + "?q=Bolo")
+        self.assertIsNotNone(response)
+
+    def test_when_search_term_is_none(self):
+        response = self.client.get(reverse('recipes:search') + "?q=")
+        self.assertEqual(response.context['search_term'], "")

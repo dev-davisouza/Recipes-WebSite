@@ -1,5 +1,5 @@
 from unittest import TestCase
-from django.test import TestCase as DjangoTestCase
+from .test_authors_base import AuthorsTestBase
 from django.urls import reverse
 from parameterized import parameterized
 from authors.forms import RegisterForm, Authors
@@ -34,45 +34,7 @@ class AuthorsRegisterFormUnittest(TestCase):
         self.assertEqual(current, needed)
 
 
-class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
-
-    def setUp(self, *args, **kwargs):
-        # Making a dummy form data:
-        form_data = {
-            'username': 'user',
-            'first_name': 'first',
-            'last_name': 'last',
-            'email': 'email@anyemail.com',
-            'password': 'Str0ngP@ssword1',
-            'password_confirmation': 'Str0ngP@ssword1',
-        }
-
-        # Making a dummy user:
-        dummy_user = User.objects.create_user(
-            username=form_data['username'],
-            first_name=form_data['first_name'],
-            last_name=form_data['last_name'],
-            email=form_data['email'],
-            password=form_data['password'],
-        )
-        # Adding the User object to our future Author object as an attribute
-        form_data.update({'user': dummy_user})
-
-        # Some tests needs just a form data, not a instance of Authors class:
-        self.form_data = form_data
-
-        # Instanciating an Authors object:
-        self.form = Authors.objects.create(
-            user=dummy_user,
-            username=form_data['username'],
-            first_name=form_data['first_name'],
-            last_name=form_data['last_name'],
-            email=form_data['email'],
-            password=form_data['password'],
-            password_confirmation=form_data['password_confirmation']
-        )
-
-        return super().setUp(*args, **kwargs)
+class AuthorsRegisterFormIntegrationTest(AuthorsTestBase):
 
     @parameterized.expand([
         ('username', 'Username field must not be empty'),
@@ -99,21 +61,41 @@ class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
         ('password_confirmation', 'Password and password confirmation must be equal'),   # noqa
     ])
     def test_clean_fields_validation(self, field, error_msg):
+        # Creating a dummy user
+        user = self.make_user()
+        '''
+        Updating the self.form to a local form data and putting the
+        User object as an attribute
+        '''
+        data = self.form_data
+
+        # Create a valid form
+        form = RegisterForm(data=data)
+        if form.is_valid():
+            author = form.save(commit=False)
+            author.user = user
+            author.save()
+        else:
+            self.fail(msg="'form' must be valid")
+
+        # Creating a invalid form data
         invalid_name = {'first_name': '123', 'last_name': '123'}
         invalid_passes = {'password': 'str@ngpass123',
                           'password_confirmation': 'wea&kpass123'}
-        # Updating the form data with invalid names
-        data = self.form_data
+
+        # Now, we update the form data
         data.update(invalid_name)
         data.update(invalid_passes)
 
         '''Creating a invalid form, invalid 'cause they can't recieve
         the same user, username & email'''
-        self.form2 = RegisterForm(data=self.form_data)
-        self.assertFalse(self.form2.is_valid())
-        self.assertIn(field, self.form2.errors)
-        self.assertEqual(self.form2.errors[field][0],
-                         error_msg)
+        form2 = RegisterForm(data=data)
+        if form2.is_valid():
+            self.fail("'form2' must be invalid")
+        else:
+            self.assertIn(field, form2.errors)
+            self.assertEqual(form2.errors[field][0],
+                             error_msg)
 
     @parameterized.expand([
         ('username', 'user'),
@@ -124,5 +106,8 @@ class AuthorsRegisterFormIntegrationTest(DjangoTestCase):
         ('password_confirmation', 'Str0ngP@ssword1'),
     ])
     def test_check_validators_return_data(self, field, expected_value):
-        form_attributes = vars(self.form)
-        self.assertEqual(form_attributes.get(field), expected_value)
+        form = RegisterForm(self.form_data)
+        if form.is_valid():
+            self.assertEqual(form.cleaned_data[field], expected_value)
+        else:
+            self.fail(msg="Form is not valid")
