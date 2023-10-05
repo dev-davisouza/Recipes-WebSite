@@ -83,7 +83,7 @@ def search(request):
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
-    return render(request, 'recipes/pages/search.html', context={
+    return render(request, 'global/pages/search.html', context={
         "title": f"search for '{search_term}' | ",
         'recipes': page_obj,
         'pagination_range': pagination_range,

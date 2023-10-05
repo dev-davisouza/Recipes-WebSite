@@ -23,7 +23,7 @@ class RecipeViewsSearchTest(RecipeTestBase):
         """
         # Getting the HTTP response object by the URL
         response = self.client.get(reverse('recipes:search') + "?q=Bolo")
-        self.assertTemplateUsed(response, 'recipes/pages/search.html')
+        self.assertTemplateUsed(response, 'global/pages/search.html')
 
     def test_search_view_loads_correct_template_if_404_not_found(self):
         # Getting the HTTP response object by the URL
