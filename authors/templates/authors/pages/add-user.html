@@ -3,19 +3,40 @@
 {% block content %}
 
 <div class="main-content center container">
-
-  <!-- Script for the close Button of flash message -->
+  <!-- Script for the close Button of flash message --> 
   <script>
-      function closeMessage(button) {
-          var messageDiv = button.parentElement.parentElement;
-          messageDiv.style.display = "none";
-        }
+    function closeMessage(button) {
+      var messageDiv = button.parentElement.parentElement;
+      messageDiv.style.display = "none";
+    }
   </script>
-
-    <center><h2>Register</h2></center>
-  </div>
-
+  
+  <center><h2>Register</h2></center>
+  
   {% include 'global/partials/messages.html' %}
 
-  {% include "global/pages/form.html" %}
+  <div class="main-content container">
+    <form action="{% url 'authors:treat' %}" method="POST">
+      {% csrf_token %}
+      <div class="form-content form-content-grid">
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{field}}
+            {% if field.help_text %}
+              <p class="help-text">{{ field.help_text }}</p>
+            {% endif %}
+  
+            {{ field.errors }}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="form-content form-content-grid">
+        <div class="form-group">
+          <button type="submit">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}
