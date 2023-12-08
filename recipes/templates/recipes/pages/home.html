@@ -4,6 +4,13 @@
 
 {% block content %}
     {% include 'global/partials/messages.html' %}
+    <!-- Script for the close Button of flash message --> 
+    <script>
+        function closeMessage(button) {
+        var messageDiv = button.parentElement.parentElement;
+        messageDiv.style.display = "none";
+        }
+    </script>
 
     <div class="main-content main-content-list container">
         {% for recipe in recipes %}

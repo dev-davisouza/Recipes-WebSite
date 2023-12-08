@@ -111,3 +111,21 @@ class AuthorsRegisterFormIntegrationTest(AuthorsTestBase):
             self.assertEqual(form.cleaned_data[field], expected_value)
         else:
             self.fail(msg="Form is not valid")
+
+    def test_author_created_can_login(self):
+        url = reverse('authors:treat')
+
+        self.form_data.update({
+            'username': 'testuser',
+            'password': '@Bc123456',
+            'password_confirmation': '@Bc123456',
+        })
+
+        self.client.post(url, data=self.form_data, follow=True)
+
+        is_authenticated = self.client.login(
+            username='testuser',
+            password='@Bc123456'
+        )
+
+        self.assertTrue(is_authenticated)
