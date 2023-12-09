@@ -9,7 +9,7 @@ class AuthorsRegisterViews(AuthorsTestBase):
         self.assertTemplateUsed(response, 'recipes/pages/404_error.html')
 
     def test_traet_view_redirects_correctly(self):
-        url_add_user = reverse('authors:add_user')
+        url_login_user = reverse('authors:login')
 
         url_treat_post = reverse('authors:treat')
 
@@ -17,7 +17,7 @@ class AuthorsRegisterViews(AuthorsTestBase):
             url_treat_post, data=self.form_data, follow=True)
 
         # Verify if the redirection was happened with success
-        self.assertRedirects(response, url_add_user)
+        self.assertRedirects(response, url_login_user)
 
     def test_traet_view_creates_a_user_correctly(self):
 
