@@ -19,7 +19,7 @@
       "editor.formatOnSave": true,
       "editor.formatOnType": true,
       "editor.codeActionsOnSave": {
-        "source.organizeImports": true
+        "source.organizeImports": "explicit"
       }
     },
     "[html]": {

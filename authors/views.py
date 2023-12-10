@@ -65,7 +65,7 @@ def treat_post_login(request):
         if authenticated_user is not None:
             messages.success(request, "You're logged in.")
             login(request, authenticated_user)
-            return redirect('recipes:home')
+            return redirect('recipes:dashboard')
         else:
             messages.error(request, 'Invalid credentials')
     else:
@@ -84,3 +84,8 @@ def logout_view(request):
 
     logout(request)
     return redirect('authors:login')
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard(request):
+    return render(request, 'authors/pages/dashboard.html')
