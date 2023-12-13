@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -44,6 +45,10 @@ def treat_post_add_user(request):
 
 
 def login_user(request):
+    if request.user.is_authenticated:
+        messages.info(request, "Você já está conectado, caso queira sair de "
+                      f"sua conta clique no botão de logout")
+        return redirect("recipes:home")
     form = LoginForm()
     return render(request, 'authors/pages/login.html', {
         'form': form,

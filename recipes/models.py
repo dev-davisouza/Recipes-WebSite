@@ -48,9 +48,9 @@ class Recipe(models.Model):
         if not self.slug:
             self.slug = self._generate_unique_slug()
         elif Recipe.objects.filter(slug=self.slug).exclude(id=self.id).exists():  # noqa
-            # Se o "slug" já existe em outro objeto
+            # Se o slug já existe em outro objeto
             # (excluindo o próprio objeto sendo salvo),
-            # precisamos gerar um novo "slug" único.
+            # precisamos gerar um novo slug único.
             self.slug = self._generate_unique_slug()
 
         super().save(*args, **kwargs)
