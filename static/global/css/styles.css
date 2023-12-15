@@ -22,7 +22,8 @@
     --color-success-dark: #4a9c5d;
     --color-alert-dark: #927f40;
     --color-warning-dark: #927f40;
-    --color-error-dark: #da525d;
+    --color-error-dark: #cc2e3b;
+    --color-error-dark-hover: #b83842;
 
     --color-gray-0: #f9f9f9;
     --color-gray-1: #e0e0e0;
@@ -212,6 +213,7 @@ h6 {
 }
 
 .recipe-meta-container {
+    justify-content: center;
     display: flex;
     flex-flow: row wrap;
     padding: var(--spacing-gutter-medium);
@@ -245,7 +247,6 @@ h6 {
 .recipe-footer a:hover {
     filter: brightness(2);
 }
-
 
 
 .main-footer {
@@ -439,6 +440,60 @@ h6 {
     cursor: pointer;
     float: right;
     margin-top: -10px;
+}
+
+.edit-button{
+    font-family: var(--font-primary);
+    font-size: 18px;
+    height: 4rem;
+    width: 15rem;
+    border: solid 1px var(--color-primary-dark);
+    border-radius: 5px;
+    color: white;
+    background-color: var(--color-primary-dark);
+    margin-right: 3rem;
+    margin-left: 3
+    rem;
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+    text-decoration: none;
+}
+
+.edit-button a{
+    color: white;
+    text-decoration: none;
+}
+
+.edit-button:hover{
+    background-color: var(--color-primary-dark-hover);
+    color: white;
+    transform: scale(1.2)
+}
+
+.exclude-button{
+    font-family: var(--font-primary);
+    font-size: 18px;
+    height: 4rem;
+    width: 15rem;
+    border: solid 1px var(--color-error-dark);
+    border-radius: 5px;
+    color: white;
+    background-color: var(--color-error-dark);
+    margin-right: 3rem;
+    margin-left: 3
+    rem;
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+    text-decoration: none;
+}
+
+.exclude-button a{
+    color: white;
+    text-decoration: none;
+}
+
+.exclude-button:hover{
+    background-color: var(--color-error-dark-hover);
+    color: white;
+    transform: scale(1.2)
 }
 
 @media (max-width: 600px) {

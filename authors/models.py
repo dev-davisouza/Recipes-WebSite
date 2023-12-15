@@ -17,7 +17,7 @@ email_validator = RegexValidator(
 
 class Authors(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, blank=False, null=False)  # noqa
+        User, on_delete=models.CASCADE, blank=False, null=False, related_name='profile')  # noqa
     first_name = models.CharField(
         'First Name', max_length=30, null=False, blank=False,)
     last_name = models.CharField(

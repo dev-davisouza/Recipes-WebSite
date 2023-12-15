@@ -1,3 +1,7 @@
 from django.contrib import admin
+from authors.models import Authors
 
-# Register your models here.
+
+@admin.register(Authors)
+class AuthorsAdmin(admin.ModelAdmin):
+    list_display = ('username',)

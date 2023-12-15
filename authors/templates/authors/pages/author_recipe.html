@@ -1,6 +1,8 @@
 {% extends 'global/base.html' %}
 
-{% block title %}Dashboard ({{ user }}) | {% endblock title %}
+{% block title %}
+  {{recipe_title}} |
+{% endblock title %}
 
 {% block content %}
   <div class="main-content center container">
@@ -15,10 +17,16 @@
 
     <h2>Dashboard ({{ user }})</h2>
     <br><br>{% include 'authors/partials/login_message.html' %}<br><br>
+    <form action="{% url "authors:treat_create_recipe" %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
       <div class="main-content main-content-list container">
-        {% for recipe in recipes %}
-          {% include 'recipes/partials/recipe-cards.html'%}
-        {% endfor %}
+        <div class="form-content form-content-grid">
+          <div class="form-group">
+            {{form}}<br><br>
+            <button type="submit">Send</button>
+          </div>
+        </div>
       </div>
+    </form>
   </div>
 {% endblock content %}
