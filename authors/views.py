@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm
 from .models import User
 from recipes.models import Recipe
@@ -102,23 +102,30 @@ def dashboard(request):
 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def author_recipe_create(request):
-    form = AuthorRecipeForm(request.FILES)
+    recipe_form_data = request.session.get(
+        'recipe_form_data')
+
+    form = AuthorRecipeForm(recipe_form_data, request.FILES)
     return render(request, 'authors/pages/author_recipe.html',
-                  context={'form': form,})
+                  context={'form': form, 'recipe_title': 'Crie suas receitas!'})
 
 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def treat_author_recipe_create(request):
-    if request.method != 'POST':
-        return redirect('authors:create_recipe')
-    
-    form = AuthorRecipeForm(request.POST, request.FILES)
+    if not request.POST:
+        messages.error(request, "Você só pode enviar os dados uma vez!")
+        return render(request, 'recipes/pages/404_error.html', status=404)
+
+    POST = request.POST
+    request.session['recipe_form_data'] = POST
+    form = AuthorRecipeForm(POST, request.FILES)
     if form.is_valid():
         f = form.save(commit=False)
         f.author = request.user.profile
         f.save()
         messages.success(request, 'Receita criada com sucesso!.')
-        return redirect('authors:create_recipe')
+        del (request.session['recipe_form_data'])
+        return redirect('authors:dashboard')
     
     messages.error(request, 'Formulário não válido!')
     return redirect('authors:create_recipe')
@@ -127,7 +134,7 @@ def treat_author_recipe_create(request):
 @login_required(login_url='authors:login', redirect_field_name='next')
 def author_recipe_edit(request, id):
     try:
-        recipe = Recipe.objects.get(is_published=False, author=request.user.profile, pk=id,) # noqa
+        recipe = Recipe.objects.get(author=request.user.profile, pk=id,) # noqa
     except Recipe.DoesNotExist:
         messages.error(request, "Receita solicitada não existe!")
         return redirect('authors:create_recipe')
@@ -142,3 +149,17 @@ def author_recipe_edit(request, id):
         messages.success(request, "Receita editada com sucesso!")
     return render(request, 'authors/pages/author_recipe.html',
                   context={'form': form, 'recipe_title': recipe.title})
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def author_recipe_exclude(request, id):
+    try:
+        recipe = Recipe.objects.get(pk=id) # noqa
+    except Recipe.DoesNotExist:
+        messages.error(request, "Receita solicitada não existe!")
+        return redirect('authors:create_recipe')
+    
+    if recipe:
+        recipe.delete()
+        messages.success(request, 'Receita excluída com sucesso!')
+        return redirect('authors:dashboard')

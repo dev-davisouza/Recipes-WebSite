@@ -19,4 +19,6 @@ urlpatterns = [
     path('recipe/edit/<int:id>/', views.author_recipe_edit,
          name='edit_recipe',
           ),
+    path('recipe/exclude/<int:id>/', views.author_recipe_exclude,
+         name="delete_recipe")
 ]

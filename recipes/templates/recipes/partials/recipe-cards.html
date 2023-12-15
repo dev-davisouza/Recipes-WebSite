@@ -78,7 +78,7 @@
             <a href="{% url 'authors:edit_recipe' recipe.id %}">Edit recipe</a>
         </button>
         <button class="exclude-button">
-            <a href="">Exclude recipe</a>
+            <a href="{% url "authors:delete_recipe" recipe.id %}">Delete recipe</a>
         </button>
     </div>
     {% endif %}

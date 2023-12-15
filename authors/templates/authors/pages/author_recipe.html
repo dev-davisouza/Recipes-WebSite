@@ -17,14 +17,19 @@
 
     <h2>Dashboard ({{ user }})</h2>
     <br><br>{% include 'authors/partials/login_message.html' %}<br><br>
-    <form action="{% url "authors:treat_create_recipe" %}" method="POST" enctype="multipart/form-data">
+    <form class="main-form" action="{% url "authors:treat_create_recipe" %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="main-content main-content-list container">
+      <div class="left">
         <div class="form-content form-content-grid">
-          <div class="form-group">
+          <div class="form-group {{ field.field.widget.attrs.class }}">
             {{form}}<br><br>
-            <button type="submit">Send</button>
+            <button type="submit">Send</button>  
           </div>
+          {% if field.name == 'cover' and field.value.url %}
+            <div class="span-2">
+              <img src="{{ field.value.url }}" alt="Capa para {{ recipe.title }}">
+            </div>
+          {% endif %}
         </div>
       </div>
     </form>
