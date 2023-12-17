@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from .forms import RegisterForm, LoginForm
 from .models import User
 from recipes.models import Recipe
@@ -49,7 +48,7 @@ def treat_post_add_user(request):
 def login_user(request):
     if request.user.is_authenticated:
         messages.info(request, "Você já está conectado, caso queira sair de "
-                      f"sua conta clique no botão de logout")
+                      "sua conta clique no botão de logout")
         return redirect("recipes:home")
     form = LoginForm()
     return render(request, 'authors/pages/login.html', {
@@ -95,8 +94,9 @@ def logout_view(request):
 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard(request):
-    recipes = Recipe.objects.filter(author=request.user.profile, is_published=False,)
-    messages.info(request, "As an author, you can edit or exclude your recipes that not was published :D")
+    recipes = Recipe.objects.filter(author=request.user.profile,
+                                    is_published=False,)
+    messages.info(request, "As an author, you can edit or exclude your recipes that not was published :D")  # noqa
     return render(request, 'authors/pages/dashboard.html',
                   context={'recipes': recipes, 'is_dashboard_page': True})
 
@@ -109,7 +109,7 @@ def author_recipe_create(request):
 
     form = AuthorRecipeForm(recipe_form_data, request.FILES)
     return render(request, 'authors/pages/author_recipe.html',
-                  context={'form': form, 'recipe_title': 'Crie suas receitas!', 
+                  context={'form': form, 'recipe_title': 'Crie suas receitas!',
                            'create_recipe_form_action': form_action})
 
 
@@ -129,7 +129,7 @@ def treat_author_recipe_create(request):
         messages.success(request, 'Receita criada com sucesso!.')
         del (request.session['recipe_form_data'])
         return redirect('authors:dashboard')
-    
+
     messages.error(request, 'Formulário não válido!')
     return redirect('authors:create_recipe')
 
@@ -141,7 +141,7 @@ def author_recipe_edit(request, id):
     except Recipe.DoesNotExist:
         messages.error(request, "Receita solicitada não existe!")
         return redirect('authors:create_recipe')
-   
+
     form = AuthorRecipeForm(
         data=request.POST or None,
         files=request.FILES or None,
@@ -162,7 +162,7 @@ def author_recipe_exclude(request, id):
     except Recipe.DoesNotExist:
         messages.error(request, "Receita solicitada não existe!")
         return redirect('authors:create_recipe')
-    
+
     if recipe:
         recipe.delete()
         messages.success(request, 'Receita excluída com sucesso!')
