@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .forms import RegisterForm, LoginForm
 from .models import User
 from recipes.models import Recipe
@@ -104,10 +105,12 @@ def dashboard(request):
 def author_recipe_create(request):
     recipe_form_data = request.session.get(
         'recipe_form_data')
+    form_action = True
 
     form = AuthorRecipeForm(recipe_form_data, request.FILES)
     return render(request, 'authors/pages/author_recipe.html',
-                  context={'form': form, 'recipe_title': 'Crie suas receitas!'})
+                  context={'form': form, 'recipe_title': 'Crie suas receitas!', 
+                           'create_recipe_form_action': form_action})
 
 
 @login_required(login_url='authors:login', redirect_field_name='next')
@@ -138,7 +141,7 @@ def author_recipe_edit(request, id):
     except Recipe.DoesNotExist:
         messages.error(request, "Receita solicitada não existe!")
         return redirect('authors:create_recipe')
-    
+   
     form = AuthorRecipeForm(
         data=request.POST or None,
         files=request.FILES or None,
@@ -147,6 +150,7 @@ def author_recipe_edit(request, id):
     if form.is_valid():
         form.save()
         messages.success(request, "Receita editada com sucesso!")
+        return redirect('authors:dashboard')
     return render(request, 'authors/pages/author_recipe.html',
                   context={'form': form, 'recipe_title': recipe.title})
 
