@@ -157,8 +157,10 @@ def author_recipe_edit(request, id):
 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def author_recipe_exclude(request, id):
+    if not request.POST:
+        return redirect('authors:dashboard')
     try:
-        recipe = Recipe.objects.get(pk=id) # noqa
+        recipe = Recipe.objects.get(pk=id)
     except Recipe.DoesNotExist:
         messages.error(request, "Receita solicitada não existe!")
         return redirect('authors:create_recipe')

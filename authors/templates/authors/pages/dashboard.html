@@ -15,6 +15,7 @@
 
     <h2>Dashboard ({{ user }})</h2>
     <br><br>{% include 'authors/partials/login_message.html' %}<br><br>
+    <h3>Your Recipes:</h3><br><br>
       <div class="main-content main-content-list container">
         {% for recipe in recipes %}
           {% include 'recipes/partials/recipe-cards.html'%}
