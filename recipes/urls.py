@@ -7,7 +7,7 @@ urlpatterns = [
     # Always the search URL will comes before any URLS.
     path('recipes/search/', views.search, name="search"),
     path('', views.home, name="home"),
-    path('recipes/category/<int:category_id>/',
+    path('recipes/category/<str:category_name>/',
          views.category, name="category"),
     path('recipes/<slug>/', views.recipe, name="recipe"),
 

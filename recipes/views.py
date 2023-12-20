@@ -1,15 +1,15 @@
 import os
 from django.shortcuts import render
-from recipes.models import Recipe
+from recipes.models import Recipe, Category
 from django.db.models import Q
 from utils.pagination import make_pagination
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
 
-def category(request, category_id):
+def category(request, category_name):
     recipes = Recipe.objects.filter(
-        category__id=category_id, is_published=True)
+        category__name=category_name, is_published=True)
 
     if not recipes:
         response = render(request, 'recipes/pages/404_error.html',
